@@ -25,10 +25,10 @@ class Communication{
 
 class DataBaseCommunication{
   static Future<MySqlConnection> get connection async {
-    String host = "mysql5005.site4now.net";
-    String dataBase = "db_a5095c_webconf";
-    String userName = "a5095c_webconf";
-    String pass = "0505690866A.";
+    String host = "host";
+    String dataBase = "dataBase";
+    String userName = "userName";
+    String pass = "pass";
     int port = 3306;
     try {
       final connection = await MySqlConnection.connect(new ConnectionSettings(
