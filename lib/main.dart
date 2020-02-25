@@ -35,12 +35,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
+///This widget is the home page of your application.
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
   final String title;
 
   @override
@@ -53,8 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
         actions: <Widget>[
           //create the three dots menu in the appbar

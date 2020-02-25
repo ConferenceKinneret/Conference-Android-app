@@ -323,7 +323,7 @@ class BuildTabButton extends StatelessWidget {
   ///return true if have another lecture in same time
   bool haveParallel(Lecture lecture) {
     for (Lecture pLecture in conferenceCard.parallelLectures) {
-      if (pLecture.startTime == lecture.startTime) return true;
+      if (pLecture.startTime == lecture.startTime && pLecture.lectureName != lecture.lectureName) return true;
     }
     return false;
   }

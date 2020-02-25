@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 
 class Constants{
   static const String Register = 'Register';
@@ -18,7 +20,7 @@ class Constants{
 class ConferenceCard{
   final String title;       //conference name
   final String description;
-  final String place;      //location
+  final String place;       //location
   final String date;
   final String imageUrl;
   final List<Lecture> lectures;
@@ -58,6 +60,9 @@ class ConferenceCard{
     }
     //remove all from list and add all from sorted list
     this.lectures.removeRange(0, this.lectures.length);
+    for(Lecture lecture in newLectures){
+      lecture.removeLecturersDuplications();
+    }
     this.lectures.addAll(newLectures);
   }
 
@@ -124,6 +129,19 @@ class Lecture{
   final String description;
   final String file; //todo: implement
   final String conferenceName;
+
+  void removeLecturersDuplications(){
+    if(lecturers == null || lecturers.length < 2) return;
+
+    final newList = new LinkedHashSet<Lecturer>(
+        equals: (Lecturer e1, Lecturer e2) => e1.name == e2.name,
+        hashCode: (Lecturer e) => e.name.hashCode);
+
+    newList.addAll(lecturers);
+
+    lecturers.removeRange(0, lecturers.length);
+    lecturers.addAll(newList);
+  }
 
   /// get string in format HH:MM and return the hour as int
   int hourOfStart(){

@@ -24,7 +24,7 @@ class AboutRout extends StatelessWidget {
               Divider(
                 color: Colors.indigo,
               ),
-              Text("Version: 1.0"),
+              Text("Version: 1.1"),
               Text(Constants.aboutText),
             ]),
           ),

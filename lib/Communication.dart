@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
-import 'dart:ui';
-import 'package:flutter/material.dart';
 import 'package:flutter_app/Constants.dart';
 import 'package:flutter_app/Data.dart';
 import 'package:mysql1/mysql1.dart';
@@ -25,10 +23,10 @@ class Communication{
 
 class DataBaseCommunication{
   static Future<MySqlConnection> get connection async {
-    String host = "mysql5005.site4now.net";
-    String dataBase = "db_a5095c_webconf";
-    String userName = "a5095c_webconf";
-    String pass = "0505690866A.";
+    String host = MyData.getHost();
+    String dataBase = MyData.getDataBase();
+    String userName = MyData.getUserName();
+    String pass = MyData.getPassword();
     int port = 3306;
     try {
       final connection = await MySqlConnection.connect(new ConnectionSettings(
@@ -53,7 +51,7 @@ class DataBaseCommunication{
 
     //close the connection
     await myConnection.close();
-    //return mysql1.Results (list of fields)
+
     return results;
   }
 
@@ -63,6 +61,10 @@ class DataBaseCommunication{
     final res1 = await loadLecturers();
     final res2 = await loadLecture();
     final res3 = await loadConference(loadAll);
+    //remove duplicate
+    MyData.removeDuplicate();
+    //update cards
+    MyData.updateCards();
     return Communication.getConferenceCards();
   }
 
@@ -99,7 +101,7 @@ class DataBaseCommunication{
       }
       MyData.addConference(conferenceCard);
     }
-    MyData.updateConference();
+    //MyData.updateConference();
     return true;
   }
 
@@ -121,7 +123,7 @@ class DataBaseCommunication{
       );
       MyData.addLecture(lecture);
     }
-    MyData.updateLectures();
+    //MyData.updateLectures();
     return true;
   }
 

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Communication.dart';
 import 'package:flutter_app/Constants.dart';
 import 'package:flutter_app/LecturerRoute.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class LectureRout extends StatelessWidget{
-  final Lecture lecture; //todo: change name
+  final Lecture lecture;
 
   LectureRout({Key key, @required this.lecture}):super(key: key);
 
@@ -20,100 +21,79 @@ class LectureRout extends StatelessWidget{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            //Show the lecture title
             Text(lecture.lectureName,
               style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold),),
             Divider(
               color: Colors.lightBlue,
             ),
-            BuildTime(card: lecture,),
-            BuildPlace(card: lecture,),
+            buildTime(),
+            buildPlace(),
+
             buildLecturers(lecture.lecturers),
             Divider(
               color: Colors.lightBlue,
             ),
+            buildFileButton(),
 
-            BuildDescription(card: lecture,),
-
-            Divider(
-              color: Colors.lightBlue,
-            ),
-            //BuildButton(lectureId: card.lectureId,),
+            Text(lecture.description, style: TextStyle(fontSize: 20.0,),),
           ]
       ),
       ),
     );
   }
 
-}
-
-class BuildTime extends StatelessWidget {
-  BuildTime({this.card});
-  @required final Lecture card;
-
-  @override
-  Widget build(BuildContext context) {
+  ///Add the start and end time with clock icon
+  Widget buildTime() {
     return Container(
       child: Row(
         children: <Widget>[
           Icon(Icons.access_time),
-          Text(card.startTime + " - " + card.endTime, style: TextStyle(fontSize: 20.0,),),
+          Text(lecture.startTime + " - " + lecture.endTime, style: TextStyle(fontSize: 20.0,),),
         ],
       ),
     );
   }
-}
 
-class BuildDescription extends StatelessWidget {
-  BuildDescription({this.card});
-  @required final Lecture card;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(card.description, style: TextStyle(fontSize: 20.0,),),
-        ],
-      ),
-    );
-  }
-}
-
-class BuildPlace extends StatelessWidget {
-  BuildPlace({this.card});
-  @required final Lecture card;
-
-  @override
-  Widget build(BuildContext context) {
+  ///Add place with place icon
+  Widget buildPlace() {
     return Container(
       child: Row(
         children: <Widget>[
           Icon(Icons.place),
-          Text(card.place, style: TextStyle(fontSize: 20.0,),),
+          Text(lecture.place, style: TextStyle(fontSize: 20.0,),),
         ],
       ),
     );
   }
-}
 
-class BuildButton extends StatelessWidget {
-  BuildButton({this.lectureId});
-  @required final int lectureId;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: AlignmentDirectional.centerEnd,
-      child: RaisedButton(
-        child: Text("Add to planner"),
-        onPressed: () {
-          Communication.registerToLecture(lectureId);
-        },
-      ),
-    );
+  ///The button to download the lecture file if have one
+  Widget buildFileButton() {
+    if (lecture.file != null && lecture.file != "") {
+      return Container(
+        //alignment: AlignmentDirectional.centerEnd,
+        child: Center(
+          child: RaisedButton(
+            child: Text("Dowmload lecture file"),
+            onPressed: _launchURL,
+          ),
+        ),
+      );
+    }else return Container();
   }
+  ///Part of download button
+  _launchURL() async {
+    final url = lecture.file;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Fluttertoast.showToast(msg: 'Failed to open url');
+    }
+  }
+
 }
+
 
 Widget buildLecturers(List<Lecturer> lecturers) {
   if(lecturers != null && lecturers.isNotEmpty) return Container(
@@ -171,3 +151,23 @@ class BuildLecturer extends StatelessWidget {
       return Text(lecturer.name, style: TextStyle(fontSize: 20.0),);
   }
 }
+
+/*
+//to future implement
+class BuildButton extends StatelessWidget {
+  BuildButton({this.lectureId});
+  @required final int lectureId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: AlignmentDirectional.centerEnd,
+      child: RaisedButton(
+        child: Text("Add to planner"),
+        onPressed: () {
+          Communication.registerToLecture(lectureId);
+        },
+      ),
+    );
+  }
+}*/

@@ -1,7 +1,47 @@
 import 'package:flutter_app/Communication.dart';
 import 'package:flutter_app/Constants.dart';
+import 'package:encrypt/encrypt.dart';
 
 class MyData{
+  static String getHost(){
+    return decrypt("ZpXwnUz0qMpOHbsh0B++3rsLVORPM+BSVYtnZ5gAAW4=");
+  }
+
+  static String getDataBase(){
+    return decrypt("b47cjRXxoc8YbL8txhnl3rJzdYUlSOVXUI5iYp0FBGs=");
+  }
+
+  static String getUserName(){
+    return decrypt("atmz1RWix40eUasnyhyIsg==");
+  }
+
+  static String getPassword(){
+    return decrypt("O9mz2Rb4qMJNBYlmoH6OtA==");
+  }
+
+  static String encrypt(String string) {
+    final plainText = string;
+    final key = Key.fromUtf8('my 32 length key................');
+    final iv = IV.fromLength(16);
+
+    final encrypter = Encrypter(AES(key));
+
+    final encrypted = encrypter.encrypt(plainText, iv: iv);
+
+    return encrypted.base64;
+  }
+
+  static String decrypt(String string){
+    final key = Key.fromUtf8('my 32 length key................');
+    final iv = IV.fromLength(16);
+
+    final encrypter = Encrypter(AES(key));
+
+    final decrypted = encrypter.decrypt64(string, iv: iv);
+
+    return decrypted;
+  }
+
   static List<ConferenceCard> get getConferenceCards{
     return myConferenceCard;
   }
@@ -72,6 +112,7 @@ class MyData{
             for(Lecture conLecture in conferenceCard.lectures){
               if(conLecture.startTime == lecture.startTime){
                 conferenceCard.parallelLectures.add(lecture);
+                //if(conferenceCard.lectures.contains(lecture)) conferenceCard.lectures.remove(lecture);
                 break;
               }
             }
