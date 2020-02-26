@@ -72,7 +72,6 @@ class LectureRout extends StatelessWidget{
   Widget buildFileButton() {
     if (lecture.file != null && lecture.file != "") {
       return Container(
-        //alignment: AlignmentDirectional.centerEnd,
         child: Center(
           child: RaisedButton(
             child: Text("Dowmload lecture file"),

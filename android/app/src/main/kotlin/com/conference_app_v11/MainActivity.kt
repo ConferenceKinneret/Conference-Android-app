@@ -1,4 +1,4 @@
-package com.example.flutter_app
+package com.conference_app_v11
 
 import android.os.Bundle
 

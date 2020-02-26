@@ -44,7 +44,7 @@ class LoadRout extends StatelessWidget {
             context, ModalRoute.withName(Navigator.defaultRouteName));
       });
     }catch(e) {
-      print("ERROR: " + e.toString());
+      print("Load ERROR: " + e.toString());
       Fluttertoast.showToast(msg: 'ERROR:' + e.toString());
       Navigator.popUntil(
           context, ModalRoute.withName(Navigator.defaultRouteName));
